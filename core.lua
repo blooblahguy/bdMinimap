@@ -201,7 +201,7 @@ local function moveMinimapButtons()
 		if ((manualTarget[n] and f:IsShown() ) or (
 			f:GetName() and 
 			f:IsShown() and 
-			(strfind(n, "LibDB") or strfind(n, "Button")) and 
+			(strfind(n, "LibDB") or strfind(n, "Button") or strfind(n, "Btn")) and 
 			not ignoreFrames[n]
 		)) then 
 			--print(f:GetName())
