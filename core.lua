@@ -3,10 +3,10 @@ local addon, map = ...
 local defaults = {}
 defaults[#defaults+1] = {size = {
 	type="slider",
-	value=180,
+	value=300,
 	step=2,
 	min=50,
-	max=300,
+	max=400,
 	label="Size",
 	tooltip="Width and Height of Minimap",
 	callback = function() Minimap:Update() end
@@ -39,7 +39,7 @@ defaults[#defaults+1] = {showconfig= {
 }}
 
 bdCore:addModule("Minimap", defaults)
-local config = bdCore.config["Minimap"]
+local config = bdCore.config.profile['Minimap']
 
 function GetMinimapShape() return "SQUARE" end
 
@@ -50,6 +50,7 @@ Minimap.background:SetBackdropColor(0,0,0,0)
 Minimap.background:SetBackdropBorderColor(unpack(bdCore.media.border))
 
 function Minimap:Update()
+	config = bdCore.config.profile['Minimap']
 	if (config.shape == "Rectangle") then
 		Minimap:SetMaskTexture("Interface\\Addons\\bdMinimap\\rectangle.tga")
 		Minimap.background:SetSize(config.size, config.size*.75)
@@ -64,12 +65,13 @@ function Minimap:Update()
 		Minimap:SetClampRectInsets(0, 0, 0, 0)
 	end
 end
+bdCore:hookEvent("bd_reconfig",function() Minimap:Update() end)
 Minimap:EnableMouse(true)
 Minimap:SetMaskTexture("Interface\\Addons\\bdMinimap\\rectangle.tga")
 Minimap:SetArchBlobRingScalar(0);
 Minimap:SetQuestBlobRingScalar(0);
 Minimap:ClearAllPoints()
-Minimap:SetPoint("TOPLEFT", UIParent, "TOPLEFT")
+Minimap:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 40, 20)
 --Minimap:SetClampedToScreen(true)
 bdCore:makeMovable(Minimap)
 
