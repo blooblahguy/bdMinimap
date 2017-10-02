@@ -72,6 +72,15 @@ Minimap:SetArchBlobRingScalar(0);
 Minimap:SetQuestBlobRingScalar(0);
 Minimap:ClearAllPoints()
 Minimap:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 40, 20)
+
+-- hopefully the below stops shithead addons from making minimap not a square
+Minimap:RegisterEvent("ADDON_LOADED")
+Minimap:RegisterEvent("PLAYER_ENTERING_WORLD")
+Minimap:RegisterEvent("LOADING_SCREEN_DISABLED")
+Minimap:HookScript("OnEvent", function()
+	function GetMinimapShape() return "SQUARE" end
+	return
+end)
 --Minimap:SetClampedToScreen(true)
 bdCore:makeMovable(Minimap)
 
@@ -126,7 +135,8 @@ end)
 bdConfigButton:SetScript("OnClick", function() bdCore:toggleConfig() end)
 
 local function mmMouseover()
-	if (not config.mouseoverbuttonframe) then return true end
+	if (not config.mouseoverbuttonframe) then Minimap.buttonFrame:Show(); return true end
+
 	local over = false
 	if (Minimap:IsMouseOver()) then over = true end
 	if (Minimap.background:IsMouseOver()) then over = true end
