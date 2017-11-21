@@ -3,10 +3,10 @@ local addon, map = ...
 local defaults = {}
 defaults[#defaults+1] = {size = {
 	type="slider",
-	value=180,
+	value=300,
 	step=2,
 	min=50,
-	max=300,
+	max=400,
 	label="Size",
 	tooltip="Width and Height of Minimap",
 	callback = function() Minimap:Update() end
@@ -38,8 +38,13 @@ defaults[#defaults+1] = {showconfig= {
 	callback = function() Minimap:Update() end
 }}
 
+<<<<<<< HEAD
 local config = bdCore:addModule("Minimap", defaults)
 --local config = bdCore.config["Minimap"]
+=======
+bdCore:addModule("Minimap", defaults)
+local config = bdCore.config.profile['Minimap']
+>>>>>>> c41d5f9fa6760008350a4b0ae199f9c0fa5a1fd8
 
 function GetMinimapShape() return "SQUARE" end
 
@@ -50,6 +55,7 @@ Minimap.background:SetBackdropColor(0,0,0,0)
 Minimap.background:SetBackdropBorderColor(unpack(bdCore.media.border))
 
 function Minimap:Update()
+	config = bdCore.config.profile['Minimap']
 	if (config.shape == "Rectangle") then
 		Minimap:SetMaskTexture("Interface\\Addons\\bdMinimap\\rectangle.tga")
 		Minimap.background:SetSize(config.size, config.size*.75)
@@ -64,12 +70,22 @@ function Minimap:Update()
 		Minimap:SetClampRectInsets(0, 0, 0, 0)
 	end
 end
+bdCore:hookEvent("bd_reconfig",function() Minimap:Update() end)
 Minimap:EnableMouse(true)
 Minimap:SetMaskTexture("Interface\\Addons\\bdMinimap\\rectangle.tga")
 Minimap:SetArchBlobRingScalar(0);
 Minimap:SetQuestBlobRingScalar(0);
 Minimap:ClearAllPoints()
-Minimap:SetPoint("TOPLEFT", UIParent, "TOPLEFT")
+Minimap:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 40, 20)
+
+-- hopefully the below stops shithead addons from making minimap not a square
+Minimap:RegisterEvent("ADDON_LOADED")
+Minimap:RegisterEvent("PLAYER_ENTERING_WORLD")
+Minimap:RegisterEvent("LOADING_SCREEN_DISABLED")
+Minimap:HookScript("OnEvent", function()
+	function GetMinimapShape() return "SQUARE" end
+	return
+end)
 --Minimap:SetClampedToScreen(true)
 bdCore:makeMovable(Minimap)
 
@@ -124,7 +140,8 @@ end)
 bdConfigButton:SetScript("OnClick", function() bdCore:toggleConfig() end)
 
 local function mmMouseover()
-	if (not config.mouseoverbuttonframe) then return true end
+	if (not config.mouseoverbuttonframe) then Minimap.buttonFrame:Show(); return true end
+
 	local over = false
 	if (Minimap:IsMouseOver()) then over = true end
 	if (Minimap.background:IsMouseOver()) then over = true end
@@ -201,7 +218,7 @@ local function moveMinimapButtons()
 		if ((manualTarget[n] and f:IsShown() ) or (
 			f:GetName() and 
 			f:IsShown() and 
-			(strfind(n, "LibDB") or strfind(n, "Button")) and 
+			(strfind(n, "LibDB") or strfind(n, "Button") or strfind(n, "Btn")) and 
 			not ignoreFrames[n]
 		)) then 
 			--print(f:GetName())
