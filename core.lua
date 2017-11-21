@@ -38,13 +38,8 @@ defaults[#defaults+1] = {showconfig= {
 	callback = function() Minimap:Update() end
 }}
 
-<<<<<<< HEAD
-local config = bdCore:addModule("Minimap", defaults)
---local config = bdCore.config["Minimap"]
-=======
 bdCore:addModule("Minimap", defaults)
 local config = bdCore.config.profile['Minimap']
->>>>>>> c41d5f9fa6760008350a4b0ae199f9c0fa5a1fd8
 
 function GetMinimapShape() return "SQUARE" end
 
