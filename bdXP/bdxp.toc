@@ -1,7 +1,0 @@
-## Interface: 73000
-## Title: |cffA02C2Fbd|rXP
-## DefaultState: Enabled
-## LoadOnDemand: 0
-## Dependencies: bdCore
-
-core.lua
