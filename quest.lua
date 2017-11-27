@@ -1,2 +1,9 @@
 local addonName, core = ...
--- we should move the quest log here, and potentially replace it entirely (though that may be another addon)
+local config = bdCore.config.profile['Minimap']
+
+
+ObjectiveTrackerFrame:ClearAllPoints()
+ObjectiveTrackerFrame:SetPoint("TOP", Minimap, "BOTTOM")
+
+
+Minimap:Update()

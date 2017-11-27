@@ -1,17 +1,13 @@
 local addonName, core = ...
+local config = bdCore.config.profile['Minimap']
+local xp_holder = core.xp_holder
+
 local bar = CreateFrame("frame", "bdXP", UIParent)
-
-local defaults = {}
-
-local anchor = Minimap.background or Minimap or UIParent
-bar:ClearAllPoints()
-bar:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 2, 0)
-bar:SetPoint("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", -2, -14)
+bar:SetPoint("TOPLEFT", Minimap.background, "BOTTOMLEFT", 2, 0)
+bar:SetPoint("BOTTOMRIGHT", Minimap.background, "BOTTOMRIGHT", -2, -20)
 bar:SetFrameStrata("LOW")
 bar:SetFrameLevel(6)
-bar:SetBackdrop({bgFile = bdCore.media.flat, insets = {top = -2, left = -2, bottom = -2, right = -2}})
-bar:SetBackdropColor(unpack(bdCore.media.border))
---bar:Hide()
+bdCore:setBackdrop(bar)
 
 bar.xp = CreateFrame('StatusBar', nil, bar)
 bar.xp:SetAllPoints(bar)
@@ -42,6 +38,7 @@ local numberize = function(v)
 		return value
 	end
 end
+core.numberize = numberize
 
 bar.bg = bar:CreateTexture("bg", 'BORDER')
 bar.bg:SetAllPoints(bar)

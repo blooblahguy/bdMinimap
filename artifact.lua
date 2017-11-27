@@ -1,196 +1,172 @@
--- BAG_UPDATE PLAYER_REGEN_ENABLED
+local addonName, core = ...
+local config = bdCore.config.profile['Minimap']
+local ap_holder = core.ap_holder
 
-for bag = 0, NUM_BAG_SLOTS do        
-	for slot = 1, GetContainerNumSlots(bag) do            
-		local itemIdx = GetContainerItemID(bag, slot)            
-		local itemSpellc = GetItemSpell(itemIdx)
-		local acxc = {GetContainerItemInfo(bag, slot)}
-		if acxc[1] ~= nil then
-			if itemSpellc and itemSpellc == aura_env.empowering or acxc[1] == 1041434 or acxc[1] == 1041435 then
-				local icon = GetItemIcon(itemIdx)                
-				WeakAuras.regions[aura_env.id].region:SetTexture(icon)               
-				aura_env.button:Show()                
-				aura_env.button:SetAttribute("type", "item")                
-				aura_env.button:SetAttribute("item", "item:"..itemIdx)               
-				return true
-			end            
-		end
-	end
-end
-WeakAuras.regions[aura_env.id].region:SetTexture(nil)
-aura_env.button:SetAttribute("type", nil)
-aura_env.button:SetAttribute("item", nil) 
-aura_env.button:Hide()
+local holder = CreateFrame("Frame", "bdAP", UIParent)
+holder:SetFrameStrata("LOW")
+holder:SetFrameLevel(6)
+holder:SetHeight(20)
+bdCore:setBackdrop(holder)
 
-aura_env.empowering = select(1, GetSpellInfo(228111))
+-- use ap button
+local ap_button = CreateFrame("Button", "bdAP_Button", holder, "SecureActionButtonTemplate")
+ap_button:SetSize(20, 20)
+ap_button:SetPoint("TOPRIGHT", holder, "TOPLEFT")
+ap_button:SetAttribute("type", nil)
+ap_button:SetAttribute("item", "item")
+ap_button:Hide()
+bdCore:setBackdrop(ap_button)
 
--- Create button and fill WA region
-aura_env.button = CreateFrame("Button", "UseArtifactButton", WeakAuras.regions[aura_env.id].region, "SecureActionButtonTemplate")
-aura_env.button:SetAllPoints(WeakAuras.regions[aura_env.id].region)
+ap_button.t = ap_button:CreateTexture(nil, "OVERLAY")
+ap_button.t:SetTexCoord(.1, .9, .1, .9)
+ap_button.t:SetAllPoints()
 
-function()
-    local itemID, altItemID, name, icon, xp, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop, artifactTier = C_ArtifactUI.GetEquippedArtifactInfo();
-    
-    local xpForNextPoint = C_ArtifactUI.GetCostForPointAtRank(pointsSpent, artifactTier);
-    
-    
-    return xp, xpForNextPoint, true
-end
-function()
-    if (C_ArtifactUI.GetEquippedArtifactInfo()) then
-        local itemID, altItemID, name, icon, xp, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop, artifactTier = C_ArtifactUI.GetEquippedArtifactInfo();
-        return xp
-    end
+-- progress bar
+local ap_prog = CreateFrame("StatusBar", nil, holder)
+ap_prog:SetAllPoints(holder)
+ap_prog:SetStatusBarTexture(bdCore.media.flat)
+ap_prog:SetValue(0)
+ap_prog:SetStatusBarColor(.89, .8, .5)
 
-end
-function()
-    
-    
-    if (C_ArtifactUI.GetEquippedArtifactInfo()) then
-        
-        
-        local itemID, altItemID, name, icon, xp, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop, artifactTier = C_ArtifactUI.GetEquippedArtifactInfo();
-        
-        local xpForNextPoint = C_ArtifactUI.GetCostForPointAtRank(pointsSpent, artifactTier);
-        
-        
-        local shortnum = function(v)
-            if v <= 9999 then
-                return v
-            elseif v >= 1000000000 then
-                return format("%.3f B", v/1000000000)           
-            elseif v >= 1000000 then
-                return format("%.0f m", v/1000000)
-            elseif v >= 10000 then
-                return format("%.1f k", v/1000)
-            end
-        end
-        
-        ret = shortnum(xpForNextPoint)
-        rettt =  shortnum(xp)
-        
-        return rettt .." / " .. ret
-        
-    end
-end
+-- text
+holder.text = ap_prog:CreateFontString(nil, "OVERLAY")
+holder.text:SetFont(bdCore.media.font, 14, "OUTLINE")
+holder.text:SetPoint("CENTER", holder, "CENTER")
+holder.text:SetTextColor(1,1,1)
+holder.text:SetAlpha(0)
+holder:SetScript("OnEnter", function() holder.text:SetAlpha(1) end)
+holder:SetScript("OnLeave", function() holder.text:SetAlpha(0) end)
 
-function()
-    
-    if (C_ArtifactUI.GetEquippedArtifactInfo()) then
-        
-        
-        
-        
-        local itemID, altItemID, name, icon, xp, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop, artifactTier = C_ArtifactUI.GetEquippedArtifactInfo();
-        
-        local xpForNextPoint = C_ArtifactUI.GetCostForPointAtRank(pointsSpent, artifactTier);
-        
-        
-        
-        
-        return string.format("%.2f", xp / xpForNextPoint * 100)
-        
-        
-    end
-    
-end
+-- ap in bags bar
+local ap_pend = CreateFrame("StatusBar", nil, holder)
+ap_pend:SetAllPoints(holder)
+ap_pend:SetStatusBarTexture(bdCore.media.flat)
+ap_pend:SetValue(0)
+ap_pend:SetStatusBarColor(.89, .8, .5)
+ap_pend:SetAlpha(0.4)
 
-
-
-local _, ns = ...
-
-local tooltip = CreateFrame('GameTooltip', 'iipArtifactScanner', UIParent, 'GameTooltipTemplate')
+-- tooltip scanning
+local tooltip = CreateFrame('GameTooltip', 'bdAPScanner', UIParent, 'GameTooltipTemplate')
 tooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 
-local bu = CreateFrame('Button', nil, UIParent, 'SecureActionButtonTemplate')
-bu:SetSize(21, 21)
-bu:SetFrameLevel(0)
-bu:SetAttribute('type', 'item')
-bu:SetPoint('CENTER', UIParent, 'CENTER', 0, 8)
---bu:Hide()
+-- empowering cast
+local numberize = core.numberize
+local empowering = select(1, GetSpellInfo(228111))
+local function comma_value(n) -- credit http://richard.warburton.it
+	local left,num,right = string.match(n,'^([^%d]*%d)(%d*)(.-)$')
+	return left..(num:reverse():gsub('(%d%d%d)','%1,'):reverse())..right
+end
 
-bu.t = bu:CreateTexture()
-bu.t:SetTexCoord(.1, .9, .1, .9)
-bu.t:SetAllPoints()
-
-bu.cd = CreateFrame('Cooldown', nil, bu, 'CooldownFrameTemplate')
-bu.cd:SetAllPoints()
-
-bu.text = bu:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightSmall')
-bu.text:SetPoint('RIGHT', bu, 'LEFT', -7, 1)
-
-local cooldown = function()
-	if  bu.id then
-		local start, cd = GetItemCooldown(bu.id)
-		bu.cd:SetCooldown(start, cd)
+-- update everything
+function updateAP()
+	if (InCombatLockdown()) then return end
+	if (not config.aptracker) then
+		holder:Hide()
+		Minimap:Update()
+		return
 	end
-end
 
-local hide = function()
-	bu.id = nil
-	bu:SetAttribute('item', nil)
-	--bu:Hide()
-	bu.t:SetTexture''
-	bu.text:SetText''
-end
+	holder:Show()
 
-local show = function(id, ap)
-	print("show")
-	bu.id = id
-	bu:SetAttribute('item', 'item:'..id)
-	bu:ClearAllPoints()
-	bu:Show()
-	bu.t:SetTexture(GetItemIcon(id))
-	bu.text:SetText(string.format('%d %s'..' +', ap, 'Artifact Power'))
+	local itemID, altItemID, name, icon, xp, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop, artifactTier = C_ArtifactUI.GetEquippedArtifactInfo();
+	if (not pointsSpent or not artifactTier) then return end
+	local xpForNextPoint = C_ArtifactUI.GetCostForPointAtRank(pointsSpent, artifactTier);
 
-end
+	ap_prog:SetMinMaxValues(0, xpForNextPoint)
+	ap_pend:SetMinMaxValues(0, xpForNextPoint)
+	ap_prog:SetValue(xp)
 
-local scan = function()
-	hide()
-	for i = 0, 4 do
-		for j = 1, GetContainerNumSlots(i) do
-			local item = GetContainerItemLink(i, j)
-			local id   = GetContainerItemID(i, j)
-			if id then
+	local apBags = 0;
+	local cur_button = nil
+	local cur_item = nil
+	for b = 0, 4 do
+		for s = 1, GetContainerNumSlots(b) do
+			local item = GetContainerItemLink(b, s)
+			local id = GetContainerItemID(b, s)
+			if (id and IsArtifactPowerItem(id)) then
 				tooltip:ClearLines()
 				tooltip:SetHyperlink(item)
-				local two = _G[tooltip:GetName()..'TextLeft2']
-				if two and two:GetText() then
-					if strmatch(two:GetText(), 'Artifact Power') then
-						local four = _G[tooltip:GetName()..'TextLeft4']:GetText()
-						four = gsub(four, ',', '')  --  strip BreakUpLargeNumbers
-						local ap = string.match(four, '%d+')
-						if ap then show(id, ap) break end
+
+				for k = tooltip:NumLines(), 1, -1 do
+					local million = (_G[tooltip:GetName()..'TextLeft'..k]:GetText() or ""):find("million")
+					local billion = (_G[tooltip:GetName()..'TextLeft'..k]:GetText() or ""):find("billion")
+					local ap = (_G[tooltip:GetName()..'TextLeft'..k]:GetText() or ""):match("(%d*%.?%d+)")
+
+					if ap then
+						if (not cur_button) then
+							cur_button = id
+							cur_item = item
+						end
+
+						ap = ap:gsub(",","")
+						if (million) then ap = ap * 1000000 end
+						if (billion) then ap = ap * 1000000000 end
+						apBags = apBags + tonumber(ap)
+						break;
 					end
 				end
 			end
 		end
 	end
-end
 
-bu:SetScript('OnEnter', function()
-	GameTooltip:SetOwner(bu, 'ANCHOR_TOP')
-	if bu.id then GameTooltip:SetItemByID(bu.id) end
-end)
-
-bu:SetScript('OnLeave', function() GameTooltip:Hide() end)
-
-local f = CreateFrame'Frame'
-f:RegisterEvent'BAG_UPDATE_COOLDOWN'
-f:RegisterEvent'SPELL_UPDATE_COOLDOWN'
-f:RegisterEvent'BAG_UPDATE_DELAYED'
-f:SetScript('OnEvent', function(self, event, ...) self[event](self, ...) end)
-
-function f:BAG_UPDATE_COOLDOWN()   cooldown() end
-function f:SPELL_UPDATE_COOLDOWN() cooldown() end
-function f:BAG_UPDATE_DELAYED()
-	if InCombatLockdown() then
-		f:RegisterEvent'PLAYER_REGEN_ENABLED'
-	else
-		scan()
+	local anchor = Minimap.background
+	local xoffset = 2
+	local yoffset = 0
+	if (bdXP and bdXP:IsShown()) then
+		anchor = bdXP
+		xoffset = 0
+		yoffset = 2
 	end
+
+	if (apBags > 0) then
+		holder:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 20 + xoffset, -yoffset)
+		holder:SetPoint("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", -xoffset, -(20 + yoffset))
+
+		ap_button.id = nil
+		ap_button:Show()
+		ap_button:SetAttribute("type", "item")   
+		ap_button:SetAttribute("item", "item:"..cur_button)     
+		ap_button.t:SetTexture(GetItemIcon(cur_button))
+		GameTooltip:Hide()
+		if (MouseIsOver(ap_button)) then
+			GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR")
+			GameTooltip:SetHyperlink(cur_item)
+			GameTooltip:Show()
+		end
+		ap_button:SetScript("OnEnter", function()
+			ShowUIPanel(GameTooltip)
+			GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR")
+			GameTooltip:SetHyperlink(cur_item)
+			GameTooltip:Show()
+		end)
+		ap_button:SetScript("OnLeave", function()
+			GameTooltip:Hide()
+		end)
+
+		holder.text:SetText(numberize(xp).." / "..numberize(xpForNextPoint).." - "..floor((xp/xpForNextPoint)*1000)/10 .."%" .. " (+"..numberize(apBags)..")")
+
+		ap_pend:Show()
+		ap_pend:SetValue(xp + apBags)
+	else
+		holder:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", xoffset, -yoffset)
+		holder:SetPoint("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", -xoffset, -(20 + yoffset))
+
+		holder.text:SetText(numberize(xp).." / "..numberize(xpForNextPoint).." - "..floor((xp/xpForNextPoint)*1000)/10 .."%")
+		ap_pend:Hide()
+		ap_button:Hide()
+		ap_button.id = nil
+		ap_button:SetAttribute("type", nil)
+		ap_button:SetAttribute("item", nil) 
+	end
+
+	--print("current xp", comma_value(xp))
+	--print("points for next", comma_value(xpForNextPoint))
+	--print("ap in bags", comma_value(apBags))
 end
-function f:PLAYER_REGEN_ENABLED()
-	scan()
-	f:UnregisterEvent'PLAYER_REGEN_ENABLED'
-end
+
+holder:RegisterEvent("BAG_UPDATE")
+holder:RegisterEvent("BAG_UPDATE_COOLDOWN")
+holder:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+holder:RegisterEvent("BAG_UPDATE_DELAYED")
+holder:SetScript("OnEvent", updateAP)
+
