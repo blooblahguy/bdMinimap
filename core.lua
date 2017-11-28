@@ -83,14 +83,14 @@ function Minimap:Update()
 		Minimap.buttonFrame:ClearAllPoints()
 
 		if (config.buttonpos == "Top") then
-			Minimap.buttonFrame:SetPoint("BOTTOMLEFT", ap_holder, "TOPLEFT", 2, 4)
-			Minimap.buttonFrame:SetPoint("TOPRIGHT", ap_holder, "TOPRIGHT", -2, 28)
+			Minimap.buttonFrame:SetPoint("BOTTOMLEFT", Minimap.background, "TOPLEFT", 2, 4)
+			Minimap.buttonFrame:SetPoint("TOPRIGHT", Minimap.background, "TOPRIGHT", -2, 28)
 		elseif (config.buttonpos == "Right") then
-			Minimap.buttonFrame:SetPoint("TOPLEFT", ap_holder, "TOPRIGHT", 4, -2)
-			Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", ap_holder, "BOTTOMRIGHT", 28, 2)
+			Minimap.buttonFrame:SetPoint("TOPLEFT", Minimap.background, "TOPRIGHT", 4, -2)
+			Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", Minimap.background, "BOTTOMRIGHT", 28, 2)
 		elseif (config.buttonpos == "Bottom") then
-			Minimap.buttonFrame:SetPoint("TOPLEFT", ap_holder, "BOTTOMLEFT", 2, -4)
-			Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", ap_holder, "BOTTOMRIGHT", -2, -28)
+			Minimap.buttonFrame:SetPoint("TOPLEFT", Minimap.background, "BOTTOMLEFT", 2, -4)
+			Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", Minimap.background, "BOTTOMRIGHT", -2, -28)
 			
 			if (bdAP and bdAP:IsShown()) then
 				Minimap.buttonFrame:SetPoint("TOPLEFT", bdXP, "BOTTOMLEFT", 0, -26)
@@ -100,8 +100,8 @@ function Minimap:Update()
 				Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", bdXP, "BOTTOMRIGHT", 0, -30)
 			end
 		elseif (config.buttonpos == "Left") then
-			Minimap.buttonFrame:SetPoint("TOPRIGHT", ap_holder, "TOPLEFT", -4, -2)
-			Minimap.buttonFrame:SetPoint("BOTTOMLEFT", ap_holder, "BOTTOMLEFT", -28, 2)
+			Minimap.buttonFrame:SetPoint("TOPRIGHT", Minimap.background, "TOPLEFT", -4, -2)
+			Minimap.buttonFrame:SetPoint("BOTTOMLEFT", Minimap.background, "BOTTOMLEFT", -28, 2)
 		end
 	end
 end
