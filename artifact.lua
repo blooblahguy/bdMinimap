@@ -60,7 +60,7 @@ end
 -- update everything
 function updateAP()
 	if (InCombatLockdown()) then return end
-	if (not config.aptracker) then
+	if (not config.aptracker or not C_ArtifactUI or not select(1, C_ArtifactUI.GetEquippedArtifactInfo()) ) then
 		holder:Hide()
 		Minimap:Update()
 		return
