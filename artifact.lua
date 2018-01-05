@@ -1,6 +1,7 @@
 local addonName, core = ...
 local config = bdCore.config.profile['Minimap']
 local ap_holder = core.ap_holder
+local ap_lib = LibStub:GetLibrary("LibArtifactPower-1.0")
 
 local holder = CreateFrame("Frame", "bdAP", UIParent)
 holder:SetFrameStrata("LOW")
@@ -81,9 +82,11 @@ function updateAP()
 	local cur_item = nil
 	for b = 0, 4 do
 		for s = 1, GetContainerNumSlots(b) do
-			local item = GetContainerItemLink(b, s)
-			local id = GetContainerItemID(b, s)
-			if (id and IsArtifactPowerItem(id)) then
+			--local item = GetContainerItemLink(b, s)
+			local itemID = GetContainerItemID(b, s)
+			apBags + apBags + ap_lib:GetArtifactPowerGrantedByItem(itemID)
+
+			--[[if (id and IsArtifactPowerItem(id)) then
 				tooltip:ClearLines()
 				tooltip:SetHyperlink(item)
 
@@ -105,7 +108,7 @@ function updateAP()
 						break;
 					end
 				end
-			end
+			end--]]
 		end
 	end
 
