@@ -82,9 +82,16 @@ function updateAP()
 	local cur_item = nil
 	for b = 0, 4 do
 		for s = 1, GetContainerNumSlots(b) do
-			--local item = GetContainerItemLink(b, s)
 			local itemID = GetContainerItemID(b, s)
-			apBags + apBags + ap_lib:GetArtifactPowerGrantedByItem(itemID)
+			local amount = ap_lib:GetArtifactPowerGrantedByItem(itemID)
+			if (amount) then
+				apBags = apBags + amount
+
+				if (not cur_button) then
+					cur_button = itemID
+					cur_item = GetContainerItemLink(b, s)
+				end
+			end
 
 			--[[if (id and IsArtifactPowerItem(id)) then
 				tooltip:ClearLines()
