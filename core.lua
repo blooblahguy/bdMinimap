@@ -312,15 +312,18 @@ end)
 
 -- thank you to xcoords
 local bdCoords = CreateFrame("frame", nil, WorldMapFrame)
-bdCoords.text = bdCoords:CreateFontString(nil)
+bdCoords.text = bdCoords:CreateFontString(nil, "OVERLAY")
 bdCoords.text:SetFont(bdCore.media.font, 14)
 bdCoords.text:SetAllPoints()
-bdCoords:SetFrameLevel("OVERLAY")
+bdCoords.text:SetJustifyH("CENTER")
 bdCoords:SetPoint("BOTTOM", WorldMapFrame, "BOTTOM")
-bdCoords:SetScript("OnUpdate", function()
+bdCoords:SetFrameStrata("TOOLTIP")
+bdCoords:SetSize(300, 40)
+bdCoords:SetScript("OnUpdate", function(self)
 	-- Player
-	local pX, pY, Nick, cX, cY, cursor, left, bottom, height, width, scale
-	pX, pY = GetPlayerMapPosition("player");
+	local pX, pY, Nick, cX, cY, cursor, left, bottom, height, width, scale pX, pY = GetPlayerMapPosition("player");
+
+	if (not pX) then return end
 	pX = pX*100
 	pY = pY*100
 	pX = math.floor(pX*10)/10
@@ -355,6 +358,15 @@ bdCoords:SetScript("OnUpdate", function()
 	end
 
 	self.text:SetText(Nick .. "|r  -  " .. cursor .. "|r");
+
+	if (WorldMapFrameSizeUpButton and not WorldMapFrameSizeUpButton.hooked) then
+		WorldMapFrameSizeUpButton.hooked = true
+		WorldMapFrameSizeUpButton:HookScript("OnClick", coordsResize)
+	end
+	if (not WorldMapFrame.hooked) then
+		WorldMapFrame.hooked = true
+		WorldMapFrame:HookScript("OnShow", coordsResize)
+	end
 end)
 
 
@@ -367,5 +379,4 @@ function coordsResize()
 	end
 end
 
-WorldMapFrameSizeUpButton:HookScript("OnClick", coordsResize)
-WorldMapFrame:HookScript("OnShow", coordsResize)
+
