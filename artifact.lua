@@ -6,7 +6,7 @@ local ap_lib = LibStub:GetLibrary("LibArtifactPower-1.0")
 local holder = CreateFrame("Frame", "bdAP", UIParent)
 holder:SetFrameStrata("LOW")
 holder:SetFrameLevel(6)
-holder:SetHeight(20)
+holder:SetHeight(24)
 bdCore:setBackdrop(holder)
 
 -- use ap button
@@ -169,14 +169,14 @@ function updateAP()
 		ap_button:SetAttribute("item", nil) 
 	end
 
+	Minimap:Update()
+
 	--print("current xp", comma_value(xp))
 	--print("points for next", comma_value(xpForNextPoint))
 	--print("ap in bags", comma_value(apBags))
 end
 
+bdCore:hookEvent("bd_mm_reconfig", updateAP)
 holder:RegisterEvent("BAG_UPDATE")
-holder:RegisterEvent("BAG_UPDATE_COOLDOWN")
-holder:RegisterEvent("SPELL_UPDATE_COOLDOWN")
-holder:RegisterEvent("BAG_UPDATE_DELAYED")
 holder:SetScript("OnEvent", updateAP)
 

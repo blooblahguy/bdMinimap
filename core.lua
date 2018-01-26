@@ -6,10 +6,10 @@ defaults[#defaults+1] = {size = {
 	value=300,
 	step=2,
 	min=50,
-	max=400,
+	max=600,
 	label="Size",
 	tooltip="Width and Height of Minimap",
-	callback = function() Minimap:Update() end
+	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
 }}
 
 defaults[#defaults+1] = {shape = {
@@ -17,14 +17,14 @@ defaults[#defaults+1] = {shape = {
 	value="Rectangle",
 	options={"Rectangle","Square"},
 	label="Minimap Shape",
-	callback = function() Minimap:Update() end
+	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
 }}
 defaults[#defaults+1] = {buttonpos = {
 	type="dropdown",
 	value="Bottom",
 	options={"Disable","Top","Right","Bottom","Left"},
 	label="Minimap Buttons position",
-	callback = function() Minimap:Update() end
+	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
 }}
 defaults[#defaults+1] = {mouseoverbuttonframe= {
 	type="checkbox",
@@ -35,14 +35,14 @@ defaults[#defaults+1] = {showconfig= {
 	type="checkbox",
 	value=true,
 	label="Show bdConfig button",
-	callback = function() Minimap:Update() end
+	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
 }}
 
 defaults[#defaults+1] = {aptracker= {
 	type="checkbox",
 	value=true,
 	label="Enable ap tracker",
-	callback = function() Minimap:Update() end
+	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
 }}
 
 bdCore:addModule("Minimap", defaults)
@@ -93,8 +93,8 @@ function Minimap:Update()
 			Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", Minimap.background, "BOTTOMRIGHT", -2, -28)
 			
 			if (bdAP and bdAP:IsShown()) then
-				Minimap.buttonFrame:SetPoint("TOPLEFT", bdXP, "BOTTOMLEFT", 0, -26)
-				Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", bdXP, "BOTTOMRIGHT", 0, -50)
+				Minimap.buttonFrame:SetPoint("TOPLEFT", bdAP, "BOTTOMLEFT", 0, -6)
+				Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", bdAP, "BOTTOMRIGHT", 0, -30)
 			elseif (bdXP and bdXP:IsShown()) then
 				Minimap.buttonFrame:SetPoint("TOPLEFT", bdXP, "BOTTOMLEFT", 0, -6)
 				Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", bdXP, "BOTTOMRIGHT", 0, -30)
@@ -106,6 +106,7 @@ function Minimap:Update()
 	end
 end
 bdCore:hookEvent("bd_reconfig",function() Minimap:Update() end)
+bdCore:hookEvent("bd_mm_reconfig",function() Minimap:Update() end)
 Minimap:EnableMouse(true)
 Minimap:SetMaskTexture("Interface\\Addons\\bdMinimap\\rectangle.tga")
 Minimap:SetArchBlobRingScalar(0);
