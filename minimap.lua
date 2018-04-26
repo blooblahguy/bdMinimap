@@ -75,7 +75,7 @@ end)
 
 local dummy = function() end
 local frames = {
-	"MiniMapVoiceChatFrame",
+	"MiniMapVoiceChatFrame", -- out in BFA
 	"MiniMapWorldMapButton",
 	"MinimapZoneTextButton",
 	"MiniMapMailBorder",
@@ -92,8 +92,12 @@ local frames = {
 	"MiniMapTracking",
 }
 for i = 1, (getn(frames)) do
-	_G[frames[i]]:Hide()
-	_G[frames[i]].Show = dummy
+	if (_G[frames[i]]) then
+		_G[frames[i]]:Hide()
+		_G[frames[i]].Show = dummy
+	else
+		-- print(frames[i])
+	end
 end
 
 --local zone = GetZoneText()
