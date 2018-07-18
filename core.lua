@@ -322,7 +322,7 @@ bdCoords:SetFrameStrata("TOOLTIP")
 bdCoords:SetSize(300, 40)
 bdCoords:SetScript("OnUpdate", function(self)
 	-- Player
-	local pX, pY, Nick, cX, cY, cursor, left, bottom, height, width, scale pX, pY = GetPlayerMapPosition("player");
+	local pX, pY, Nick, cX, cY, cursor, left, bottom, height, width, scale pX, pY = C_Map.GetPlayerMapPosition("player");
 
 	if (not pX) then return end
 	pX = pX*100
