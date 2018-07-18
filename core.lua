@@ -38,12 +38,12 @@ defaults[#defaults+1] = {showconfig= {
 	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
 }}
 
-defaults[#defaults+1] = {aptracker= {
-	type="checkbox",
-	value=true,
-	label="Enable ap tracker",
-	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
-}}
+-- defaults[#defaults+1] = {aptracker= {
+-- 	type="checkbox",
+-- 	value=true,
+-- 	label="Enable ap tracker",
+-- 	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
+-- }}
 
 bdCore:addModule("Minimap", defaults)
 local config = bdCore.config.profile['Minimap']

@@ -5,12 +5,12 @@
 ## LoadOnDemand: 0
 ## Dependencies: bdCore
 
-libs\lad_data.lua
-libs\LibArtifactData-1.0.lua
-libs\LibArtifactPower-1.0.lua
+## libs\lad_data.lua
+## libs\LibArtifactData-1.0.lua
+## libs\LibArtifactPower-1.0.lua
 
 core.lua
 minimap.lua
 xp.lua
-artifact.lua
+## artifact.lua
 quest.lua
