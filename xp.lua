@@ -58,41 +58,49 @@ bar:RegisterEvent("PLAYER_ENTERING_WORLD")
 --bar:RegisterEvent("UPDATE_EXHAUSTION");
 bar:RegisterEvent("UPDATE_FACTION")
 
-bar:SetScript("OnEvent", function(self,event)
-	xp = UnitXP("player")
-	mxp = UnitXPMax("player")
-	rxp = GetXPExhaustion("player")
-	name, standing, minrep, maxrep, value = GetWatchedFactionInfo()
+function bar:Update()
+	local bar = self
+	local xp = UnitXP("player")
+	local mxp = UnitXPMax("player")
+	local rxp = GetXPExhaustion("player")
+	local name, standing, minrep, maxrep, value = GetWatchedFactionInfo()
+
+	if (config.xptracker) then
 	
-	bar:Show()
-	bar.xp:SetMinMaxValues(0,mxp)
-	if UnitLevel("player") == MAX_PLAYER_LEVEL or IsXPUserDisabled == true then
-		if name then
-			bar.xp:SetStatusBarColor(FACTION_BAR_COLORS[standing].r, FACTION_BAR_COLORS[standing].g, FACTION_BAR_COLORS[standing].b, 1)
-			bar.xp:SetMinMaxValues(minrep,maxrep)
-			bar.xp:SetValue(value)
-			bar.xp.text:SetText(value-minrep.." / "..maxrep-minrep.." - "..floor(((value-minrep)/(maxrep-minrep))*1000)/10 .."% - ".. name)
+		bar:Show()
+		bar.xp:SetMinMaxValues(0,mxp)
+		if UnitLevel("player") == MAX_PLAYER_LEVEL or IsXPUserDisabled == true then
+			if name then
+				bar.xp:SetStatusBarColor(FACTION_BAR_COLORS[standing].r, FACTION_BAR_COLORS[standing].g, FACTION_BAR_COLORS[standing].b, 1)
+				bar.xp:SetMinMaxValues(minrep,maxrep)
+				bar.xp:SetValue(value)
+				bar.xp.text:SetText(value-minrep.." / "..maxrep-minrep.." - "..floor(((value-minrep)/(maxrep-minrep))*1000)/10 .."% - ".. name)
+			else
+				bar:Hide()
+			end
 		else
-			bar:Hide()
+			bar.xp:SetStatusBarColor(.4, .1, 0.6, 1)
+			bar.xp:SetValue(xp)
+			if rxp then
+				bar.xp.text:SetText(numberize(xp).." / "..numberize(mxp).." - "..floor((xp/mxp)*1000)/10 .."%" .. " (+"..numberize(rxp)..")")
+				bar.xp:SetMinMaxValues(0,mxp)
+				bar.rxp:SetMinMaxValues(0, mxp)
+				bar.xp:SetStatusBarColor(.2, .4, 0.8, 1)
+				bar.xp:SetValue(xp)
+				if (rxp+xp) >= mxp then
+					bar.rxp:SetValue(mxp)
+				else
+					bar.rxp:SetValue(xp+rxp)
+				end
+				bar.rxp:Show()
+			elseif xp > 0 and mxp > 0 then
+				bar.xp.text:SetText(numberize(xp).." / "..numberize(mxp).." - "..floor((xp/mxp)*1000)/10 .."%")
+				bar.rxp:Hide()
+			end
 		end
 	else
-		bar.xp:SetStatusBarColor(.4, .1, 0.6, 1)
-		bar.xp:SetValue(xp)
-		if rxp then
-			bar.xp.text:SetText(numberize(xp).." / "..numberize(mxp).." - "..floor((xp/mxp)*1000)/10 .."%" .. " (+"..numberize(rxp)..")")
-			bar.xp:SetMinMaxValues(0,mxp)
-			bar.rxp:SetMinMaxValues(0, mxp)
-			bar.xp:SetStatusBarColor(.2, .4, 0.8, 1)
-			bar.xp:SetValue(xp)
-			if (rxp+xp) >= mxp then
-				bar.rxp:SetValue(mxp)
-			else
-				bar.rxp:SetValue(xp+rxp)
-			end
-			bar.rxp:Show()
-		elseif xp > 0 and mxp > 0 then
-			bar.xp.text:SetText(numberize(xp).." / "..numberize(mxp).." - "..floor((xp/mxp)*1000)/10 .."%")
-			bar.rxp:Hide()
-		end
+		bar:Hide()
 	end
-end)
+end
+
+bar:SetScript("OnEvent", bar.Update)

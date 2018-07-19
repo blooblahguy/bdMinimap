@@ -38,12 +38,12 @@ defaults[#defaults+1] = {showconfig= {
 	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
 }}
 
--- defaults[#defaults+1] = {aptracker= {
--- 	type="checkbox",
--- 	value=true,
--- 	label="Enable ap tracker",
--- 	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
--- }}
+defaults[#defaults+1] = {xptracker= {
+	type="checkbox",
+	value=true,
+	label="Enable XP/Rep tracker",
+	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
+}}
 
 bdCore:addModule("Minimap", defaults)
 local config = bdCore.config.profile['Minimap']
@@ -62,6 +62,9 @@ bf_holder:SetPoint("TOPRIGHT", Minimap.background, "BOTTOMRIGHT")--]]
 
 function Minimap:Update()
 	config = bdCore.config.profile['Minimap']
+	if (bdXP) then 
+		bdXP:Update()
+	end
 	if (config.shape == "Rectangle") then
 		Minimap:SetMaskTexture("Interface\\Addons\\bdMinimap\\rectangle.tga")
 		Minimap.background:SetSize(config.size, config.size*.75)
