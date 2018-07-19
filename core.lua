@@ -322,7 +322,10 @@ bdCoords:SetFrameStrata("TOOLTIP")
 bdCoords:SetSize(300, 40)
 bdCoords:SetScript("OnUpdate", function(self)
 	-- Player
-	local pX, pY, Nick, cX, cY, cursor, left, bottom, height, width, scale pX, pY = C_Map.GetPlayerMapPosition("player");
+	local uiMapID = C_Map.GetBestMapForUnit("player")
+
+	local pX, pY = C_Map.GetPlayerMapPosition(uiMapID, "player"):GetXY()
+	local nick = '';
 
 	if (not pX) then return end
 	pX = pX*100
@@ -339,9 +342,9 @@ bdCoords:SetScript("OnUpdate", function(self)
 	end
 
 	-- Cursor
-	width, height, scale = WorldMapDetailFrame:GetWidth(), WorldMapDetailFrame:GetHeight(), WorldMapDetailFrame:GetEffectiveScale();
-	cX, cY = WorldMapDetailFrame:GetCenter()
-	left, bottom = cX - width / 2, cY + height /2;
+	local width, height, scale = WorldMapFrame:GetWidth(), WorldMapFrame:GetHeight(), WorldMapFrame:GetEffectiveScale();
+	local cX, cY = WorldMapFrame:GetCenter()
+	local left, bottom = cX - width / 2, cY + height /2;
 
 	cX, cY = GetCursorPosition();
 	cX, cY = (cX / scale - left) / width * 100, (bottom - cY / scale) / height * 100;
