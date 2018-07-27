@@ -377,9 +377,9 @@ bdCoords:SetScript("OnUpdate", function(self)
 end)
 
 
-
+-- todo; these globals changes
 function coordsResize()
-	if WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
+	if WORLDMAP_SETTINGS and WORLDMAP_WINDOWED_SIZE and (WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE) then
 		bdCoords:SetPoint("BOTTOM", WorldMapFrame, "BOTTOM", 0, 20)
 	else 
 		bdCoords:SetPoint("BOTTOM", WorldMapFrame, "BOTTOM", 0, 10)
