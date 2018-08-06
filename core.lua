@@ -18,6 +18,16 @@ function Minimap:Update()
 	if (bdXP) then 
 		bdXP:Update()
 	end
+
+	-- show/hide time
+	if (config.showtime) then
+		TimeManagerClockButton:SetAlpha(1)
+		TimeManagerClockButton:Show()
+	else
+		TimeManagerClockButton:SetAlpha(0)
+		TimeManagerClockButton:Hide()
+	end
+
 	if (config.shape == "Rectangle") then
 		Minimap:SetMaskTexture("Interface\\Addons\\bdMinimap\\rectangle.tga")
 		Minimap.background:SetSize(config.size, config.size*.75)

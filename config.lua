@@ -45,4 +45,11 @@ defaults[#defaults+1] = {xptracker= {
 	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
 }}
 
+defaults[#defaults+1] = {showtime = {
+	type="checkbox",
+	value=true,
+	label="Show Time",
+	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
+}}
+
 bdCore:addModule("Minimap", defaults)
