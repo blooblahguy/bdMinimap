@@ -20,6 +20,9 @@ function Minimap:Update()
 	end
 
 	-- show/hide time
+	if not IsAddOnLoaded("Blizzard_TimeManager") then
+		LoadAddOn('Blizzard_TimeManager')
+	end
 	if (config.showtime) then
 		TimeManagerClockButton:SetAlpha(1)
 		TimeManagerClockButton:Show()
