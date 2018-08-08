@@ -9,6 +9,7 @@
 ## libs\LibArtifactData-1.0.lua
 ## libs\LibArtifactPower-1.0.lua
 
+config.lua
 core.lua
 minimap.lua
 xp.lua
