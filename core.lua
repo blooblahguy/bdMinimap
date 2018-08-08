@@ -31,6 +31,9 @@ function Minimap:Update()
 		TimeManagerClockButton:Hide()
 	end
 
+	-- Hide Class Hall Button
+	
+
 	if (config.shape == "Rectangle") then
 		Minimap:SetMaskTexture("Interface\\Addons\\bdMinimap\\rectangle.tga")
 		Minimap.background:SetSize(config.size, config.size*.75)
@@ -292,6 +295,8 @@ bdCoords:SetSize(300, 40)
 bdCoords:SetScript("OnUpdate", function(self)
 	-- Player
 	local uiMapID = C_Map.GetBestMapForUnit("player")
+
+	if (not uiMapID) then return end
 
 	local pX, pY = C_Map.GetPlayerMapPosition(uiMapID, "player"):GetXY()
 	local nick = '';

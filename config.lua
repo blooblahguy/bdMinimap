@@ -52,4 +52,11 @@ defaults[#defaults+1] = {showtime = {
 	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
 }}
 
+defaults[#defaults+1] = {hideclasshall = {
+	type="checkbox",
+	value=false,
+	label="Hide Class Hall Button",
+	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
+}}
+
 bdCore:addModule("Minimap", defaults)
