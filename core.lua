@@ -205,6 +205,10 @@ local function moveMinimapButtons()
 			--print(f:GetName())
 			if (not f.skinned) then
 				f:SetSize(24,24)
+				f:SetScale(1)
+				f.SetSize = bdCore.noop
+				f.SetWidth = bdCore.noop
+				f.SetHeight = bdCore.noop
 				f:SetParent(Minimap.buttonFrame)
 				local r = {f:GetRegions()}
 				for o = 1, #r do
@@ -295,10 +299,11 @@ bdCoords:SetSize(300, 40)
 bdCoords:SetScript("OnUpdate", function(self)
 	-- Player
 	local uiMapID = C_Map.GetBestMapForUnit("player")
+	local position = C_Map.GetPlayerMapPosition(uiMapID, "player")
 
-	if (not uiMapID) then return end
-
-	local pX, pY = C_Map.GetPlayerMapPosition(uiMapID, "player"):GetXY()
+	if (not position) then return end
+	
+	local pX, pY = position:GetXY()
 	local nick = '';
 
 	if (not pX) then return end
