@@ -109,6 +109,7 @@ local hideTextures = {}
 local manualTarget = {}
 manualTarget['MiniMapMailFrame'] = true
 manualTarget['COHCMinimapButton'] = true
+manualTarget['ZygorGuidesViewerMapIcon'] = true
 
 ignoreFrames['MinimapBackdrop'] = true
 ignoreFrames['GameTimeFrame'] = true
