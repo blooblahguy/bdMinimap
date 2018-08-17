@@ -258,24 +258,22 @@ local function moveMinimapButtons()
 			end
 
 			-- sometimes a frame can get in here twice, don't let it
-			if (not last:GetName() == f:GetName()) then
-				f:ClearAllPoints()
-				if (config.buttonpos == "Top" or config.buttonpos == "Bottom") then
-					if (last) then
-						f:SetPoint("LEFT", last, "RIGHT", 6, 0)		
-					else
-						f:SetPoint("TOPLEFT", Minimap.buttonFrame, "TOPLEFT", 0, 0)
-					end
+			f:ClearAllPoints()
+			if (config.buttonpos == "Top" or config.buttonpos == "Bottom") then
+				if (last) then
+					f:SetPoint("LEFT", last, "RIGHT", 6, 0)		
+				else
+					f:SetPoint("TOPLEFT", Minimap.buttonFrame, "TOPLEFT", 0, 0)
 				end
-				if (config.buttonpos == "Right" or config.buttonpos == "Left") then
-					if (last) then
-						f:SetPoint("TOP", last, "BOTTOM", 0, -6)		
-					else
-						f:SetPoint("TOPLEFT", Minimap.buttonFrame, "TOPLEFT", 0, 0)
-					end
-				end
-				last = f
 			end
+			if (config.buttonpos == "Right" or config.buttonpos == "Left") then
+				if (last) then
+					f:SetPoint("TOP", last, "BOTTOM", 0, -6)		
+				else
+					f:SetPoint("TOPLEFT", Minimap.buttonFrame, "TOPLEFT", 0, 0)
+				end
+			end
+			last = f
 		end
 	end
 end
