@@ -108,6 +108,8 @@ local ignoreFrames = {}
 local hideTextures = {}
 local manualTarget = {}
 manualTarget['MiniMapMailFrame'] = true
+manualTarget['COHCMinimapButton'] = true
+
 ignoreFrames['MinimapBackdrop'] = true
 ignoreFrames['GameTimeFrame'] = true
 ignoreFrames['MinimapVoiceChatFrame'] = true
