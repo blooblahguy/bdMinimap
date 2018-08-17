@@ -3,7 +3,7 @@ local config = bdCore.config.profile['Minimap']
 
 function GetMinimapShape() return "SQUARE" end
 
-Minimap.background = CreateFrame("frame","bdMinimap",UIParent)
+Minimap.background = CreateFrame("frame", "bdMinimap", Minimap)
 Minimap.background:SetPoint("CENTER", Minimap, "CENTER", 0, 0)
 Minimap.background:SetBackdrop({bgFile = bdCore.media.flat, edgeFile = bdCore.media.flat, edgeSize = 2})
 Minimap.background:SetBackdropColor(0,0,0,0)
@@ -115,6 +115,7 @@ ignoreFrames['GameTimeFrame'] = true
 ignoreFrames['MinimapVoiceChatFrame'] = true
 --blizzFrames['QueueStatusMinimapButton'] = true
 ignoreFrames['TimeManagerClockButton'] = true
+
 hideTextures['Interface\\Minimap\\MiniMap-TrackingBorder'] = true
 hideTextures['Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight'] = true
 hideTextures['Interface\\Minimap\\UI-Minimap-Background'] = true
@@ -193,7 +194,7 @@ local function moveMinimapButtons()
 	local c = {Minimap.buttonFrame:GetChildren()}
 	local d = {Minimap:GetChildren()}
 	for k, v in pairs(d) do table.insert(c,v) end
-	table.insert(c,_G["DugisOnOffButton"])
+	-- table.insert(c,_G["DugisOnOffButton"])
 	local last = nil
 	for i = 1, #c do
 		local f = c[i]
@@ -255,24 +256,26 @@ local function moveMinimapButtons()
 				end)
 				f.skinned = true
 			end
-			f:ClearAllPoints()
-			if (config.buttonpos == "Top" or config.buttonpos == "Bottom") then
-				if (last) then
-					f:SetPoint("LEFT", last, "RIGHT", 6, 0)		
-				else
-					f:SetPoint("TOPLEFT", Minimap.buttonFrame, "TOPLEFT", 0, 0)
-				end
-			end
-			if (config.buttonpos == "Right" or config.buttonpos == "Left") then
-				if (last) then
-					f:SetPoint("TOP", last, "BOTTOM", 0, -6)		
-				else
-					f:SetPoint("TOPLEFT", Minimap.buttonFrame, "TOPLEFT", 0, 0)
-				end
-			end
-			
 
-			last = f
+			-- sometimes a frame can get in here twice, don't let it
+			if (not last == f) then
+				f:ClearAllPoints()
+				if (config.buttonpos == "Top" or config.buttonpos == "Bottom") then
+					if (last) then
+						f:SetPoint("LEFT", last, "RIGHT", 6, 0)		
+					else
+						f:SetPoint("TOPLEFT", Minimap.buttonFrame, "TOPLEFT", 0, 0)
+					end
+				end
+				if (config.buttonpos == "Right" or config.buttonpos == "Left") then
+					if (last) then
+						f:SetPoint("TOP", last, "BOTTOM", 0, -6)		
+					else
+						f:SetPoint("TOPLEFT", Minimap.buttonFrame, "TOPLEFT", 0, 0)
+					end
+				end
+				last = f
+			end
 		end
 	end
 end
