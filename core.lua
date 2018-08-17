@@ -258,7 +258,7 @@ local function moveMinimapButtons()
 			end
 
 			-- sometimes a frame can get in here twice, don't let it
-			if (not last == f) then
+			if (not last:GetName() == f:GetName()) then
 				f:ClearAllPoints()
 				if (config.buttonpos == "Top" or config.buttonpos == "Bottom") then
 					if (last) then
