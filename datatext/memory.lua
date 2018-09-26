@@ -46,7 +46,7 @@ memory:SetScript("OnClick", function()
 		end
 	end
 	
-	collectgarbage()
+	collectgarbage("collect")
 	
 	local after = 0
 
