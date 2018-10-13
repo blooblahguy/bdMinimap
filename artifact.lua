@@ -1,5 +1,5 @@
 local addonName, core = ...
-local config = bdCore.config.profile['Minimap']
+local config = bdConfigLib.profile['Minimap']
 local ap_holder = core.ap_holder
 local ap_lib = LibStub:GetLibrary("LibArtifactPower-1.0")
 

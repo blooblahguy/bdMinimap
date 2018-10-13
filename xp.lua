@@ -1,5 +1,5 @@
 local addonName, core = ...
-local config = bdCore.config.profile['Minimap']
+local config = bdConfigLib.profile['Minimap']
 local xp_holder = core.xp_holder
 
 local bar = CreateFrame("frame", "bdXP", UIParent)

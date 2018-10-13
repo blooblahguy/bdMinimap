@@ -59,4 +59,6 @@ defaults[#defaults+1] = {hideclasshall = {
 	callback = function() bdCore:triggerEvent('bd_mm_reconfig') end
 }}
 
-bdCore:addModule("Minimap", defaults)
+bdConfigLib:RegisterModule({
+	name = "Minimap"
+}, defaults, BD_persistent)

@@ -1,5 +1,5 @@
 local addonName, core = ...
-local config = bdCore.config.profile['Minimap']
+local config = bdConfigLib.profile['Minimap']
 
 function GetMinimapShape() return "SQUARE" end
 
