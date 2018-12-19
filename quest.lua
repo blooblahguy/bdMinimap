@@ -1,5 +1,5 @@
 local addonName, core = ...
-local config = bdConfigLib.profile['Minimap']
+local config = bdConfigLib:GetSave('Minimap')
 
 
 ObjectiveTrackerFrame:ClearAllPoints()

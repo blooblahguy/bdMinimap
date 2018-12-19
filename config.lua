@@ -61,4 +61,4 @@ defaults[#defaults+1] = {hideclasshall = {
 
 bdConfigLib:RegisterModule({
 	name = "Minimap"
-}, defaults, BD_persistent)
+}, defaults, "BD_persistent")

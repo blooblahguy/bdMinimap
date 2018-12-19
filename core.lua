@@ -1,5 +1,5 @@
 local addonName, core = ...
-local config = bdConfigLib.profile['Minimap']
+local config = bdConfigLib:GetSave('Minimap')
 
 function GetMinimapShape() return "SQUARE" end
 
@@ -21,7 +21,7 @@ bf_holder:SetPoint("TOPLEFT", Minimap.background, "BOTTOMLEFT")
 bf_holder:SetPoint("TOPRIGHT", Minimap.background, "BOTTOMRIGHT")--]]
 
 function Minimap:Update()
-	config = bdCore.config.profile['Minimap']
+	-- config = bdCore.config.profile['Minimap']
 	if (bdXP) then 
 		bdXP:Update()
 	end
