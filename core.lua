@@ -156,7 +156,7 @@ bdConfigButton:SetScript("OnLeave", function(self)
 	self.text:SetTextColor(.4,.6,1) 
 	GameTooltip:Hide()
 end)
-bdConfigButton:SetScript("OnClick", function() bdCore:toggleConfig() end)
+bdConfigButton:SetScript("OnClick", function() bdConfigLib:Toggle() end)
 
 local function mmMouseover()
 	if (not config.mouseoverbuttonframe) then Minimap.buttonFrame:Show(); return true end
