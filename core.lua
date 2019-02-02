@@ -86,6 +86,7 @@ function Minimap:Update()
 end
 bdCore:hookEvent("bd_reconfig",function() Minimap:Update() end)
 bdCore:hookEvent("bd_mm_reconfig",function() Minimap:Update() end)
+bdCore:hookEvent("profile_changed",function() Minimap:Update() end)
 Minimap:EnableMouse(true)
 Minimap:SetMaskTexture("Interface\\Addons\\bdMinimap\\rectangle.tga")
 Minimap:SetArchBlobRingScalar(0);
