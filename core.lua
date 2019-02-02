@@ -9,12 +9,12 @@ Minimap.background:SetBackdrop({bgFile = bdCore.media.flat, edgeFile = bdCore.me
 Minimap.background:SetBackdropColor(0,0,0,0)
 Minimap.background:SetBackdropBorderColor(unpack(bdCore.media.border))
 
-local framerate = Minimap:CreateFontString(nil, "OVERLAY")
-framerate:SetFont(bdCore.media.font, 10)
-framerate:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2)
-Minimap:HookScript("OnUpdate", function(self)
-	framerate:SetText(math.floor(GetFramerate()))
-end)
+-- local framerate = Minimap:CreateFontString(nil, "OVERLAY")
+-- framerate:SetFont(bdCore.media.font, 10)
+-- framerate:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 2, -2)
+-- Minimap:HookScript("OnUpdate", function(self)
+-- 	framerate:SetText(math.floor(GetFramerate()))
+-- end)
 
 --[[local bf_holder = CreateFrame("Frame", nil, UIParent)
 bf_holder:SetPoint("TOPLEFT", Minimap.background, "BOTTOMLEFT")
@@ -25,6 +25,12 @@ function Minimap:Update()
 	if (bdXP) then 
 		bdXP:Update()
 	end
+
+	-- if (FramerateLabel) then 
+	-- 	FramerateLabel:ClearAllPoints()
+	-- 	FramerateLabel:SetHeight(30)
+	-- 	FramerateLabel:SetPoint("TOP", UIParent, "TOP", 0 -4)
+	-- end
 
 	-- show/hide time
 	if not IsAddOnLoaded("Blizzard_TimeManager") then
