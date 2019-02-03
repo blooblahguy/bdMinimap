@@ -1,13 +1,21 @@
 local addonName, core = ...
 local config = bdConfigLib:GetSave('Minimap')
+local border = bdConfigLib:GetSave("bdAddons").border
 
 function GetMinimapShape() return "SQUARE" end
 
 Minimap.background = CreateFrame("frame", "bdMinimap", Minimap)
 Minimap.background:SetPoint("CENTER", Minimap, "CENTER", 0, 0)
-Minimap.background:SetBackdrop({bgFile = bdCore.media.flat, edgeFile = bdCore.media.flat, edgeSize = 2})
+Minimap.background:SetBackdrop({bgFile = bdCore.media.flat, edgeFile = bdCore.media.flat, edgeSize = border})
 Minimap.background:SetBackdropColor(0,0,0,0)
 Minimap.background:SetBackdropBorderColor(unpack(bdCore.media.border))
+
+bd_add_action("bdcore_redraw,addon_loaded", function()
+	border = bdConfigLib:GetSave("bdAddons").border
+	Minimap.background:SetBackdrop({bgFile = bdCore.media.flat, edgeFile = bdCore.media.flat, edgeSize = border})
+	Minimap.background:SetBackdropColor(0,0,0,0)
+	Minimap.background:SetBackdropBorderColor(unpack(bdCore.media.border))
+end)
 
 -- local framerate = Minimap:CreateFontString(nil, "OVERLAY")
 -- framerate:SetFont(bdCore.media.font, 10)
