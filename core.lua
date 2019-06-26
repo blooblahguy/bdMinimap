@@ -88,7 +88,7 @@ function Minimap:Update()
 			if (bdAP and bdAP:IsShown()) then
 				Minimap.buttonFrame:SetPoint("TOPLEFT", bdAP, "BOTTOMLEFT", 0, -6)
 				Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", bdAP, "BOTTOMRIGHT", 0, -30)
-			elseif (config.xptracker) then
+			elseif (config.xptracker and bdXP and bdXP:IsShown()) then
 				Minimap.buttonFrame:SetPoint("TOPLEFT", bdXP, "BOTTOMLEFT", 0, -6)
 				Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", bdXP, "BOTTOMRIGHT", 0, -30)
 			end
