@@ -1,6 +1,6 @@
 local addonName, core = ...
 local config = bdConfigLib:GetSave('Minimap')
-local border = bdConfigLib:GetSave("bdAddons").border
+local border = bdCore.pixel * bdConfigLib:GetSave("bdAddons").border
 
 function GetMinimapShape() return "SQUARE" end
 
@@ -11,7 +11,7 @@ Minimap.background:SetBackdropColor(0,0,0,0)
 Minimap.background:SetBackdropBorderColor(unpack(bdCore.media.border))
 
 bd_add_action("bdcore_redraw,addon_loaded", function()
-	border = bdConfigLib:GetSave("bdAddons").border
+	border = bdCore.pixel * bdConfigLib:GetSave("bdAddons").border
 	Minimap.background:SetBackdrop({bgFile = bdCore.media.flat, edgeFile = bdCore.media.flat, edgeSize = border})
 	Minimap.background:SetBackdropColor(0,0,0,0)
 	Minimap.background:SetBackdropBorderColor(unpack(bdCore.media.border))
@@ -103,14 +103,14 @@ function Minimap:Update()
 		Minimap.buttonFrame:ClearAllPoints()
 
 		if (config.buttonpos == "Top") then
-			Minimap.buttonFrame:SetPoint("BOTTOMLEFT", Minimap.background, "TOPLEFT", 2, 4)
-			Minimap.buttonFrame:SetPoint("TOPRIGHT", Minimap.background, "TOPRIGHT", -2, 28)
+			Minimap.buttonFrame:SetPoint("BOTTOMLEFT", Minimap.background, "TOPLEFT", -2, 4)
+			Minimap.buttonFrame:SetPoint("TOPRIGHT", Minimap.background, "TOPRIGHT", 2, 28)
 		elseif (config.buttonpos == "Right") then
 			Minimap.buttonFrame:SetPoint("TOPLEFT", Minimap.background, "TOPRIGHT", 4, -2)
 			Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", Minimap.background, "BOTTOMRIGHT", 28, 2)
 		elseif (config.buttonpos == "Bottom") then
-			Minimap.buttonFrame:SetPoint("TOPLEFT", Minimap.background, "BOTTOMLEFT", 2, -4)
-			Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", Minimap.background, "BOTTOMRIGHT", -2, -28)
+			Minimap.buttonFrame:SetPoint("TOPLEFT", Minimap.background, "BOTTOMLEFT", -2, -4)
+			Minimap.buttonFrame:SetPoint("BOTTOMRIGHT", Minimap.background, "BOTTOMRIGHT", 2, -28)
 			
 			if (bdAP and bdAP:IsShown()) then
 				Minimap.buttonFrame:SetPoint("TOPLEFT", bdAP, "BOTTOMLEFT", 0, -6)
